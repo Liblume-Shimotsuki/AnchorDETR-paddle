@@ -1,0 +1,11 @@
+_BASE_: [
+  '../datasets/coco_detection.yml',
+  '../runtime.yml',
+  '_base_/optimizer_1x.yml',
+  '_base_/anchor_detr_r50_dc.yml',
+  '_base_/anchor_detr_reader.yml',
+]
+weights: output/anchor_detr_r50_1x_coco/model_final
+find_unused_parameters: True
+use_gpu: False
+worker_num: 0
