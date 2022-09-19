@@ -446,7 +446,14 @@ class AnchorDETRHead(nn.Layer):
         outputs_logit = self.class_embed(feats)
         tmp = self.bbox_embed(feats)
         assert reference.shape[-1] == 2
-        tmp[:, :, :, :2] += reference
+        # It's equivalent to "tmp[:, :, :, :2] += reference",
+        # but the gradient is wrong in paddle.
+        outputs_bbox = paddle.concat(
+            [
+                tmp[:, :, :, :2] + reference,
+                tmp[:, :, :, 2:]
+            ],
+            axis=-1)
         outputs_bbox = F.sigmoid(tmp)
         outputs_seg = None
 
